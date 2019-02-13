@@ -1,0 +1,183 @@
+swagger: '2.0'
+info:
+  title: GIoT
+  description: Grid for IoT Devices.
+  version: '0.1'
+
+paths:
+  /:
+    get:
+      summary: Health check endpoint
+      operationId: src.views.health_check
+      responses:
+        '200':
+          description: Logged In
+  /devices:
+    get:
+      tags:
+        - devices
+      summary: Get all devices based on given parameters
+      operationId: src.views.device.get_all
+      parameters:
+        - $ref: '#/parameters/page_number'
+        - $ref: '#/parameters/page_size'
+        - $ref: '#/parameters/category'
+        - $ref: '#/parameters/type'
+        - $ref: '#/parameters/status'
+      responses:
+        '200':
+          description: Return list of device
+          schema:
+            $ref: '#/definitions/DeviceList'
+  /device:
+    post:
+      tags:
+        - device
+      summary: Register a new device
+      operationId: src.views.device.register
+      parameters:
+        - $ref: '#/parameters/device'
+      responses:
+        '200':
+          description: Successfully registered
+    get:
+      tags:
+        - device
+      summary: Get an available device by given paramters
+      operationId: src.views.device.get_available_device
+      parameters:
+        - $ref: '#/parameters/category'
+        - $ref: '#/parameters/type'
+      responses:
+        '200':
+          description: Return device
+          schema:
+            $ref: '#/definitions/Device'
+  /device/{device_id}:
+    get:
+      tags:
+        - device
+      summary: Get specific informtion of selected device
+      operationId: src.views.device.get
+      parameters:
+        - $ref: '#/parameters/device_id'
+      responses:
+        '200':
+          description: Return device
+          schema:
+            $ref: '#/definitions/Device'
+    put:
+      tags:
+        - device
+      summary: Edit information of selected device
+      operationId: src.views.device.update
+      parameters:
+        - $ref: '#/parameters/device_id'
+        - $ref: '#/parameters/device'
+      responses:
+        '201':
+          description: Successfully updated
+    delete:
+      tags:
+        - device
+      summary: Delete device from the list
+      operationId: src.views.device.delete
+      parameters:
+         - $ref: '#/parameters/device_id'
+      responses:
+        204:
+          description: Successfully deleted
+
+parameters:
+  page_number:
+    name: page_number
+    in: query
+    type: integer
+    default: 1
+    required: true
+  page_size:
+    name: page_size
+    in: query
+    type: integer
+    default: 10
+    required: true
+  category:
+    name: category
+    in: query
+    type: string
+    enum: [ "simulator", "hardware"]
+    required: false
+  type:
+    name: type
+    in: query
+    type: string
+    required: false
+  status:
+    name: status
+    in: query
+    type: string
+    enum: [ "inactive", "available", "used"]
+    required: false
+  device_id:
+    name: device_id
+    in: path
+    type: integer
+    required: true
+  device:
+    name: device
+    in: body
+    schema:
+      $ref: '#/definitions/Device'
+
+definitions:
+  Device:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique Identifier
+        example: 1
+        readOnly: true
+      name:
+        type: string
+        description: Device name
+        example: 'device1'
+      category:
+        type: string
+        enum: [ "simulator", "hardware"]
+        description: Device category
+        example: 'simulator'
+      type:
+        type: string
+        description: Device type
+        example: 'camera'
+      ip:
+        type: string
+        description: IP-Address of the device
+        example: 'x.x.x.x'
+      port:
+        type: string
+        description: Device port
+        example: '7100'
+      status:
+        type: string
+        enum: [ "inactive", "available", "used"]
+        description: Device status
+        example: 'inactive'
+  DeviceList:
+    type: object
+    properties:
+      page_number:
+        type: integer
+        description: Selected page number
+        example: 1
+      total_pages:
+        type: integer
+        description: Number of pages
+        example: 3
+      devices:
+        type: array
+        items:
+          $ref: '#/definitions/Device'
+
+

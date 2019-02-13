@@ -1,0 +1,11 @@
+version: '2'
+services:
+  db:
+    image: sameersbn/postgresql:10-1
+    container_name: db
+    ports:
+      - 5432:5432
+    environment:
+      - DB_USER=root
+      - DB_PASS=root
+      - DB_NAME=GIoT

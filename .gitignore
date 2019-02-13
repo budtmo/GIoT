@@ -1,0 +1,10 @@
+*.pyc
+
+# Coverage
+*.coverage
+*/coverage.xml
+*/xunit.xml
+*/coverage/*
+
+*/.idea
+*/venv
