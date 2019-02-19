@@ -12,7 +12,7 @@ class TestUpdateDeviceInformation(BaseTest):
         self.url = '/device/{id}'.format(id=1)
         self.payload = {'name': 'device10'}
 
-    def test_update_employee(self):
-        self.insert_employee()
+    def test_update_device(self):
+        self.register_device()
         res = self.test_app.put(self.url, headers=self.headers, data=json.dumps(self.payload))
         self.assertEqual(res.status_code, 201)

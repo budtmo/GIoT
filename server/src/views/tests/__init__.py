@@ -33,7 +33,7 @@ class BaseTest(TestCase):
     def register_device(self):
         with self.application.app_context():
             from src.models.device import Device
-            new_device = Device(name='device1', category='simulator', type='camera', ip='x.x.x.x', port='7100',
-                                status='available')
+            new_device = Device(name='device1', category='simulator', type='camera', version='0.1', ip='x.x.x.x',
+                                port='7100', status='available')
             self.db.session.add(new_device)
             self.db.session.commit()

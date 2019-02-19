@@ -23,6 +23,7 @@ paths:
         - $ref: '#/parameters/page_size'
         - $ref: '#/parameters/category'
         - $ref: '#/parameters/type'
+        - $ref: '#/parameters/version'
         - $ref: '#/parameters/status'
       responses:
         '200':
@@ -48,6 +49,7 @@ paths:
       parameters:
         - $ref: '#/parameters/category'
         - $ref: '#/parameters/type'
+        - $ref: '#/parameters/version'
       responses:
         '200':
           description: Return device
@@ -112,6 +114,11 @@ parameters:
     in: query
     type: string
     required: false
+  version:
+    name: version
+    in: query
+    type: string
+    required: false
   status:
     name: status
     in: query
@@ -151,6 +158,10 @@ definitions:
         type: string
         description: Device type
         example: 'camera'
+      version:
+        type: string
+        description: Device version
+        example: '0.1'
       ip:
         type: string
         description: IP-Address of the device
@@ -179,5 +190,3 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Device'
-
-

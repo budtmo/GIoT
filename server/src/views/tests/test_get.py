@@ -8,7 +8,7 @@ class TestGetAllDevices(BaseTest):
     def setUp(self):
         super().setUp()
         self.url = '/devices?page_number={0}&page_size={1}'
-        self.url_filter = '/devices?page_number={0}&page_size={1}&category={2}&type={3}&status={4}'
+        self.url_filter = '/devices?page_number={0}&page_size={1}&category={2}&type={3}&version={4}&status={5}'
 
     def test_get_devices(self):
         res = self.test_app.get(self.url.format(1, 2))
@@ -32,7 +32,7 @@ class TestGetAllDevices(BaseTest):
 
     def test_get_devices_with_filter(self):
         self.register_device()
-        res = self.test_app.get(self.url.format(1, 2, 'simulator', 'camera', 'available'))
+        res = self.test_app.get(self.url.format(1, 2, 'simulator', 'camera', '0.1', 'available'))
         self.assertEqual(res.status_code, 200)
 
 
@@ -50,8 +50,8 @@ class TestGetDevice(BaseTest):
 
     def test_get_available_device(self):
         self.register_device()
-        res = self.test_app.get(self.url.format('simulator', 'camera'))
+        res = self.test_app.get(self.url.format('simulator', 'camera', '0.1'))
         self.assertEqual(res.status_code, 200)
 
-        res = self.test_app.get(self.url.format('simulator', 'new-type'))
+        res = self.test_app.get(self.url.format('simulator', 'new-type', 'test'))
         self.assertEqual(res.status_code, 404)

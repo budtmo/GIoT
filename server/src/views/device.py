@@ -18,13 +18,15 @@ from src.msg import warning
 logger = logging.getLogger('views.device')
 
 
-def get_all(page_number: int, page_size: int, category: str=None, type: str=None, status: str=None) -> dict:
+def get_all(page_number: int, page_size: int, category: str=None, type: str=None, version: str=None,
+            status: str=None) -> dict:
     """
     Get all devices based on given parameters
     :param page_number: selected page number
     :param page_size: size of page
     :param category: Category of device
     :param type: Type of device
+    :param version: Version of device
     :param status: status of device
     :return: devices
     """
@@ -40,6 +42,9 @@ def get_all(page_number: int, page_size: int, category: str=None, type: str=None
 
     if type:
         device_query = device_query.filter(Device.type == type)
+
+    if version:
+        device_query = device_query.filter(Device.version == version)
 
     if status:
         device_query = device_query.filter(Device.status == status)
@@ -89,7 +94,7 @@ def register(device: dict) -> dict:
     return NoContent, 200
 
 
-def get_available_device(category: str=None, type: str=None) -> dict:
+def get_available_device(category: str=None, type: str=None, version: str=None) -> dict:
     device_query = Device.query
 
     if category:
@@ -97,6 +102,9 @@ def get_available_device(category: str=None, type: str=None) -> dict:
 
     if type:
         device_query = device_query.filter(Device.type == type)
+
+    if version:
+        device_query = device_query.filter(Device.version == version)
 
     return device_query.filter(Device.status == "available").first_or_404().to_dict()
 
